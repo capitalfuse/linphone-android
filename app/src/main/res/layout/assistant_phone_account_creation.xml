@@ -118,6 +118,32 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        style="@style/assistant_input_field_header_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="@string/email"
+                        android:textAllCaps="true" />
+
+                    <EditText
+                        android:id="@+id/assistant_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/resizable_textfield"
+                        android:inputType="text|textEmailAddress"
+                        android:maxLines="1"
+                        android:hint="@string/email"
+                        android:textColor="@color/black_color" />
+
+                    <TextView
+                        android:id="@+id/email_error"
+                        android:text="@string/invalid_email"
+                        style="@style/assistant_input_field_error_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
+
                     <CheckBox
                         android:id="@+id/use_username"
                         android:text="@string/use_username_instead_or_phone_number"

@@ -39,8 +39,8 @@ import org.linphone.core.DialPlan;
 import org.linphone.core.tools.Log;
 
 public class PhoneAccountCreationAssistantActivity extends AssistantActivity {
-    private TextView mCountryPicker, mError, mSipUri, mCreate;
-    private EditText mPrefix, mPhoneNumber, mUsername;
+    private TextView mCountryPicker, mError, mSipUri, mCreate, mEmailError;
+    private EditText mPrefix, mPhoneNumber, mUsername, mEmail;
     private CheckBox mUseUsernameInsteadOfPhoneNumber;
 
     private AccountCreatorListenerStub mListener;
@@ -61,7 +61,7 @@ public class PhoneAccountCreationAssistantActivity extends AssistantActivity {
                 });
 
         mError = findViewById(R.id.phone_number_error);
-
+        mEmailError = findViewById(R.id.email_error);
         mSipUri = findViewById(R.id.sip_uri);
 
         mCreate = findViewById(R.id.assistant_create);
@@ -128,6 +128,28 @@ public class PhoneAccountCreationAssistantActivity extends AssistantActivity {
 
                     @Override
                     public void afterTextChanged(Editable s) {
+                        updateCreateButtonAndDisplayError();
+                    }
+                });
+
+        mEmail = findViewById(R.id.assistant_email);
+        mEmail.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        AccountCreator.EmailStatus status =
+                                getAccountCreator().setEmail(s.toString());
+                        mEmailError.setVisibility(
+                                status == AccountCreator.EmailStatus.Ok
+                                        ? View.INVISIBLE
+                                        : View.VISIBLE);
                         updateCreateButtonAndDisplayError();
                     }
                 });
@@ -247,6 +269,7 @@ public class PhoneAccountCreationAssistantActivity extends AssistantActivity {
     private void enableButtonsAndFields(boolean enable) {
         mPrefix.setEnabled(enable);
         mPhoneNumber.setEnabled(enable);
+        mEmail.setEnabled(enable);
         mCreate.setEnabled(enable);
     }
 
@@ -254,7 +277,9 @@ public class PhoneAccountCreationAssistantActivity extends AssistantActivity {
         if (mPrefix.getText().toString().isEmpty() || mPhoneNumber.getText().toString().isEmpty())
             return;
 
-        mCreate.setEnabled(true);
+        mCreate.setEnabled(
+                mEmail.getText().toString().length() > 0
+                        && mEmailError.getVisibility() == View.INVISIBLE);
         mError.setText("");
         mError.setVisibility(View.INVISIBLE);
 

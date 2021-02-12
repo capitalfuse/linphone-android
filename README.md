@@ -1,3 +1,27 @@
+## For XMLRPC Server Settings(Provisioning)
+
+For changing the default domain:sip.linphone.org and activate remote setting(provisioning), you should modify the followings.
+
+`src/main/res/raw/default_assistant_create.rc`
+Delete the following section;
+```
+<entry name="domain" overwrite="true"></entry>
+```
+
+Set default custom sip domain or delete the following section;
+`src/main/res/raw/linphone_assistant_create.rc`
+```
+<entry name="domain" overwrite="true">sip.linphone.org</entry>
+```
+
+Delete the following section;
+`src/main/res/raw/linphonerc_factory`
+```
+[assistant]
+xmlrpc_url=https://subscribe.linphone.org:444/wizard.php
+```
+
+---
 
 [![pipeline status](https://gitlab.linphone.org/BC/public/linphone-android/badges/master/pipeline.svg)](https://gitlab.linphone.org/BC/public/linphone-android/commits/master)
 
